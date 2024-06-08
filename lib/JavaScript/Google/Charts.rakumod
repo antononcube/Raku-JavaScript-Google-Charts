@@ -67,6 +67,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <pie piechart pie-chart>,
     return $res.subst('$CHART_NAME', 'PieChart');
 }
 
+multi sub js-google-charts(Str:D $type where *.lc ∈ <bubble bubblechart bubble-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'BubbleChart');
+}
+
 multi sub js-google-charts(Str:D $type where *.lc ∈ <gauge gaugechart gauge-chart>,
                            :$data!,
                            :$column-names = Whatever,
@@ -87,6 +96,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <gauge gaugechart gauge-ch
     my $res = generate-code($data, :$column-names, :$format, |%options, |%args);
 
     return $res.subst('$CHART_NAME', 'Gauge');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'Histogram');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <scatter scatter-plot scatterplot list-plot listplot>,
