@@ -98,6 +98,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <gauge gaugechart gauge-ch
     return $res.subst('$CHART_NAME', 'Gauge');
 }
 
+multi sub js-google-charts(Str:D $type where *.lc ∈ <geochart geo-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'GeoChart');
+}
+
 multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
                            :$data!,
                            :$column-names = Whatever,
