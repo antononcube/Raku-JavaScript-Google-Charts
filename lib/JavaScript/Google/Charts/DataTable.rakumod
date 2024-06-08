@@ -12,17 +12,17 @@ sub type-ordinal($t) {
     };
 }
 
-our proto sub generate-code($data, :$version = 1, UInt :$n-tabs = 0) {*}
+our proto sub generate-code($data, :$column-names = Whatever, :$version = 1, UInt :$n-tabs = 0) {*}
 
-our multi sub generate-code($data, :$version = 'row-by-row', UInt :$n-tabs = 0) {
+our multi sub generate-code($data, :$column-names = Whatever, :$version = 'row-by-row', UInt :$n-tabs = 0) {
     return do given $version.Str {
         when $_ ∈ <1 row-by-row> {
-            generate-code-row-by-row($data, :$n-tabs)
+            generate-code-row-by-row($data, :$column-names, :$n-tabs)
         }
     }
 }
 
-sub generate-code-row-by-row($data, UInt :$n-tabs = 0) {
+sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-tabs = 0) {
 
     if !is-reshapable($data, iterable-type => Iterable, record-type => Associative) {
         die "The first (data) argument is expected to be an Iterable of Associative's.";
@@ -34,21 +34,28 @@ sub generate-code-row-by-row($data, UInt :$n-tabs = 0) {
     my @res = "new google.visualization.DataTable();";
 
     # Find column names and types
-    my @colnames = $data.head.keys.sort({ type-ordinal($data.head{$_}) });
+    my @colnames;
+    if $column-names.isa(Whatever) {
+        @colnames = $data.head.keys.sort({ type-ordinal($data.head{$_}) });
+    } elsif $column-names ~~ Iterable:D && $column-names.elems ≥ 2 {
+        @colnames = |$column-names>>.Str;
+    } else {
+        die "The argument \$column-names is expected to be an Iterable of length at least two or Whatever.";
+    }
 
     # Declare columns
     for @colnames -> $c {
 
         my $col-type = do given $data.head{$c} {
-            when DateTime:D {'datetime'}
-            when Numeric:D {'number'}
-            when Str:D {'string'}
+            when DateTime:D { 'datetime' }
+            when Numeric:D { 'number' }
+            when Str:D { 'string' }
             default {
                 die "Do not know how to process ⎡$_⎦.";
             }
         }
 
-        @res.push("data.addColumn('{$col-type}', '$c');");
+        @res.push("data.addColumn('{ $col-type }', '$c');");
     }
 
     # Add rows
