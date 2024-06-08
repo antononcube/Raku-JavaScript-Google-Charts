@@ -1,0 +1,40 @@
+{
+  "name": "JavaScript::Google::Charts",
+  "description": "Generation of JavaScript's Google Charts code for plots and charts.",
+  "version": "0.0.1",
+  "perl": "6.d",
+  "authors": [
+    "Anton Antonov"
+  ],
+  "auth": "zef:antononcube",
+  "depends": [
+    "JSON::Fast:ver<0.17+>",
+    "Hash::Merge:ver<2.0.0+>:api<2+>",
+    "Data::TypeSystem:ver<0.1.4+>"
+  ],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "JavaScript::Google::Charts": "lib/JavaScript/Google/Charts.rakumod",
+    "JavaScript::Google::Charts::Bar": "lib/JavaScript/Google/Charts/Bar.rakumod",
+    "JavaScript::Google::Charts::CodeSnippets": "lib/JavaScript/Google/Charts/CodeSnippets.rakumod",
+    "JavaScript::Google::Charts::DataTable": "lib/JavaScript/Google/Charts/DataTable.rakumod"
+  },
+  "resources": [
+  ],
+  "license": "Artistic-2.0",
+  "tags": [
+    "google",
+    "charts",
+    "google charts",
+    "cli",
+    "code",
+    "graphics",
+    "image",
+    "javascript",
+    "js",
+    "plot"
+  ],
+  "api": "0",
+  "source-url": "https://github.com/antononcube/Raku-JavaScript-Google-Charts"
+}
