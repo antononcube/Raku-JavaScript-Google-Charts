@@ -16,7 +16,6 @@
   "test-depends": [],
   "provides": {
     "JavaScript::Google::Charts": "lib/JavaScript/Google/Charts.rakumod",
-    "JavaScript::Google::Charts::Bar": "lib/JavaScript/Google/Charts/Bar.rakumod",
     "JavaScript::Google::Charts::CodeSnippets": "lib/JavaScript/Google/Charts/CodeSnippets.rakumod",
     "JavaScript::Google::Charts::DataTable": "lib/JavaScript/Google/Charts/DataTable.rakumod"
   },
