@@ -7,10 +7,6 @@ use JavaScript::Google::Charts;
 use JavaScript::Google::Charts::DataTable;
 use Data::Generators;
 
-my @res = random-tabular-dataset(4, 2, generators => [{random-real(10, $_)}, &random-word]);
+my @res = random-tabular-dataset(4, <x y>, generators => [{random-real(10, $_)}, {random-real(50, $_)}]);
 
-say @res;
-
-say JavaScript::Google::Charts::DataTable::generate-code(@res);
-
-say js-google-charts('Bar', @res);
+say js-google-charts('Scatter',column-names => <x y>, @res);
