@@ -2,6 +2,7 @@ unit module JavaScript::Google::Charts::DataTable;
 
 use Data::TypeSystem;
 use Data::TypeSystem::Predicates;
+use JSON::Fast;
 
 sub type-ordinal($t) {
     return do given $t {
@@ -51,6 +52,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
             when DateTime:D { 'datetime' }
             when Numeric:D { 'number' }
             when Str:D { 'string' }
+            when Associative:D { 'number' }
             default {
                 die "Do not know how to process ⎡$_⎦.";
             }
@@ -68,15 +70,17 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
     for |$data -> %record {
         my %h = %record.clone;
 
-       %h = %h.deepmap({
-            given $_ {
+       %h = %h.map({
+            my $v = do given $_.value {
                 when Str:D { "'$_'"}
                 when Numeric:D {$_}
                 when DateTime:D {"new Date({$_.year}, {$_.month}, {$_.day})"}
+                when Associative:D { to-json($_) }
                 default {
                     die "Do not know how to process ⎡$_⎦.";
                 }
-            }
+            };
+           $_.key => $v
         });
 
         @data-rows.push("[{%h{|@colnames}.join(', ')}]")
