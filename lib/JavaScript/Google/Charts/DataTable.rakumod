@@ -20,8 +20,8 @@ our multi sub generate-code($data, :$column-names = Whatever, :$version = 'row-b
             generate-code-row-by-row($data, :$column-names, :$n-tabs)
         }
     }
-}
 
+}
 sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-tabs = 0) {
 
     if !is-reshapable($data, iterable-type => Iterable, record-type => Associative) {
@@ -36,7 +36,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
     # Find column names and types
     my @colnames;
     if $column-names.isa(Whatever) {
-        @colnames = $data.head.keys.sort({ type-ordinal($data.head{$_}) });
+        @colnames = $data.head.keys.sort({ $_ eq 'role:annotation' ?? 10 !! type-ordinal($data.head{$_}) });
     } elsif $column-names ~~ Iterable:D && $column-names.elems ≥ 2 {
         @colnames = |$column-names>>.Str;
     } else {
@@ -47,6 +47,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
     for @colnames -> $c {
 
         my $col-type = do given $data.head{$c} {
+            when $c eq 'role:annotation' { 'string' }
             when DateTime:D { 'datetime' }
             when Numeric:D { 'number' }
             when Str:D { 'string' }
@@ -55,7 +56,11 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
             }
         }
 
-        @res.push("data.addColumn('{ $col-type }', '$c');");
+        if $c eq 'role:annotation' {
+            @res.push('data.addColumn({type:\'string\', role:\'annotation\'})');
+        } else {
+            @res.push("data.addColumn('{ $col-type }', '$c');");
+        }
     }
 
     # Add rows
