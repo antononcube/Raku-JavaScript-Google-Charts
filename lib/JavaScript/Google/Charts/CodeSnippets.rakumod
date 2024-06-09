@@ -13,6 +13,8 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
 
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.load('current', {packages:['wordtree']});
       google.charts.load('current', {'packages':['geochart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
