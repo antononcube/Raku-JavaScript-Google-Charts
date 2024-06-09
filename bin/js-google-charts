@@ -1,0 +1,54 @@
+#!/usr/bin/env raku
+use v6.d;
+
+use JavaScript::Google::Charts;
+use JSON::Fast;
+
+my %*SUB-MAIN-OPTS = :named-anywhere;
+
+#| Generates HTML document code with Google Charts plots or charts.
+multi sub MAIN(Str $chart-type, #= Chart type.
+               *@points is copy, #= Data points.
+               UInt :w(:$width) = 800, #= Width of the plot. (0 for Whatever.)
+               UInt :h(:$height) = 600, #= Height of the plot. (0 for Whatever.)
+               Str :$format = 'html', #= Output format, one of 'jupyter' or 'html'.
+               Str:D :$args, #= A JSON string with other arguments.
+               ) {
+
+
+    my %args = from-json($args);
+    my $res = js-google-charts($chart-type, @points, :$width, :$height, :$format, |%args);
+    say $res;
+}
+
+#| Generates HTML document code with Google Charts plots or charts by splitting a string of data points.
+multi sub MAIN(Str $chart-type, #= Chart type.
+               Str $words, #= String with data points.
+               UInt :w(:$width) = 800, #= Width of the plot. (0 for Whatever.)
+               UInt :h(:$height) = 600, #= Height of the plot. (0 for Whatever.)
+               Str :$format = 'html', #= Output format, one of 'jupyter' or 'html'.
+               Str:D :$args, #= A JSON string with other arguments.
+               ) {
+
+    
+    my @data;
+    if $words.contains(',') {
+        @data = $words.split(/\s/)>>.split(/','/)>>.Numeric;
+    } else {
+        @data = $words.split(/\D/)>>.Numeric;
+    }
+
+    MAIN($chart-type, @data, :$width, :$height, :$format, :$args);
+}
+
+#| Generates HTML document code with Google Charts plots or charts from pipeline input.
+multi sub MAIN(
+        Str $chart-type, #= Chart type.
+        UInt :w(:$width) = 800, #= Width of the plot. (0 for Whatever.)
+        UInt :h(:$height) = 600, #= Height of the plot. (0 for Whatever.)
+        Str :$format = 'html', #= Output format, one of 'jupyter' or 'html'.
+        Str:D :$args, #= A JSON string with other arguments.
+               ) {
+    my $words = lines.join(' ');
+    MAIN($chart-type, $words, :$width, :$height, :$format, :$args);
+}
