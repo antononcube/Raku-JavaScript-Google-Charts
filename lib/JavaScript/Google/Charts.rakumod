@@ -10,7 +10,7 @@ use JSON::Fast;
 my $jsGoogleChartsConfigCode = q:to/END/;
 google.charts.load('current', {'packages':['corechart']});
 google.charts.load('current', {'packages':['gauge']});
-google.charts.load('current', {packages:['wordtree']});
+google.charts.load('current', {'packages':['wordtree']});
 google.charts.load('current', {'packages':['geochart']});
 google.charts.load('current', {'packages':['table']});
 google.charts.setOnLoadCallback(function() {
