@@ -123,7 +123,7 @@ my @res = 120.rand xx 12;
 js-google-charts('Scatter', @res, format => 'html', :png-button);
 ```
 
-![](./docs/Raku-JavaScript-Google-Charts-scatter-plot-demo.png)
+![](https://raw.githubusercontent.com/antononcube/Raku-JavaScript-Google-Charts/main/docs/Raku-JavaScript-Google-Charts-scatter-plot-demo.png)
 
 ### [Bubble chart](https://developers-dot-devsite-v2-prod.appspot.com/chart/interactive/docs/gallery/bubblechart)
 
@@ -135,7 +135,7 @@ my @res2 = [('A'..'Z').pick, 120.rand, 130.rand, <a b>.pick, 10.rand] xx 12;
 js-google-charts('Bubble', @res2, column-names => <label x y group z>, format => 'html', :png-button, div-id => 'bubble');
 ```
 
-![](./docs/Raku-JavaScript-Google-Charts-bubble-chart-demo.png)
+![](https://raw.githubusercontent.com/antononcube/Raku-JavaScript-Google-Charts/main/docs/Raku-JavaScript-Google-Charts-bubble-chart-demo.png)
 
 --------
 
