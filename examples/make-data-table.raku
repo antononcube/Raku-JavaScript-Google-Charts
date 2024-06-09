@@ -9,4 +9,4 @@ use Data::Generators;
 
 my @res = random-tabular-dataset(4, <x y>, generators => [{random-real(10, $_)}, {random-real(50, $_)}]);
 
-say js-google-charts('Scatter',column-names => <x y>, @res);
+spurt 'scater-plot.html', js-google-charts('Scatter', column-names => <x y>, @res, format => 'html');
