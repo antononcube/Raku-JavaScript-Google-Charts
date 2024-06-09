@@ -72,7 +72,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
 
        %h = %h.map({
             my $v = do given $_.value {
-                when Str:D { "'$_'"}
+                when Str:D { "'{$_.subst(:g, '\'', '\\\'')}'"}
                 when Numeric:D {$_}
                 when DateTime:D {"new Date({$_.year}, {$_.month}, {$_.day})"}
                 when Associative:D { to-json($_) }
