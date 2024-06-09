@@ -47,6 +47,22 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
 END
 
 #============================================================
+# Button HTML template
+#============================================================
+
+my $jsGoogleChartsImageURITemplate = q:to/END/;
+        // Wait for the chart to finish drawing before calling the getImageURI() method.
+        google.visualization.events.addListener(chart, 'ready', function () {
+          chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+          console.log(chart_div.innerHTML);
+        });
+
+        chart.draw(data, options);
+
+        document.getElementById('png_div').outerHTML = '<a href="' + chart.getImageURI() + '">Printable version</a>';
+END
+
+#============================================================
 # Main Jupyter template
 #============================================================
 
@@ -67,10 +83,18 @@ END
 #============================================================
 # Main templates access
 #============================================================
-our sub MainTemplate(Str:D :$format = 'jupyter') {
+our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False) {
     return do given $format.lc {
         when 'jupyter' { $jsGoogleChartsMainTemplate }
-        when 'html' { $jsGoogleChartsMainTemplate-HTML }
+        when 'html' {
+            my $res = $jsGoogleChartsMainTemplate-HTML;
+            if $png-button {
+                $res = $res
+                        .subst('chart.draw(data, options);', "\n$jsGoogleChartsImageURITemplate\n")
+                        .subst('<div id="chart_div"></div>', '<div id="chart_div"></div>' ~ "\n\t" ~ '<div id="png_div"></div>');
+            }
+            $res
+        }
         default {
             die "The format of a Google Charts template is expected to be one if <jupyter html>.";
         }
