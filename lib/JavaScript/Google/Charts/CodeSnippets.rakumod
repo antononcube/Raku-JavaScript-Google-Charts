@@ -33,7 +33,7 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
         var options = $OPTIONS;
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.$CHART_NAME(document.getElementById('chart_div'));
+        var chart = new google.visualization.$CHART_NAME(document.getElementById('$DIV_ID'));
         chart.draw(data, options);
       }
     </script>
@@ -41,7 +41,7 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
 
   <body>
     <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <div id="$DIV_ID"></div>
   </body>
 </html>
 END
@@ -53,13 +53,13 @@ END
 my $jsGoogleChartsImageURITemplate = q:to/END/;
         // Wait for the chart to finish drawing before calling the getImageURI() method.
         google.visualization.events.addListener(chart, 'ready', function () {
-          chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-          console.log(chart_div.innerHTML);
+          $DIV_ID.innerHTML = '<img src="' + chart.getImageURI() + '">';
+          console.log($DIV_ID.innerHTML);
         });
 
         chart.draw(data, options);
 
-        document.getElementById('png_div').outerHTML = '<a href="' + chart.getImageURI() + '">Printable version</a>';
+        document.getElementById('png_$DIV_ID').outerHTML = '<a href="' + chart.getImageURI() + '">PNG image</a>';
 END
 
 #============================================================
@@ -83,7 +83,7 @@ END
 #============================================================
 # Main templates access
 #============================================================
-our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False) {
+our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False, Str:D :$div-id = 'chart_div') {
     return do given $format.lc {
         when 'jupyter' { $jsGoogleChartsMainTemplate }
         when 'html' {
@@ -91,9 +91,9 @@ our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False) {
             if $png-button {
                 $res = $res
                         .subst('chart.draw(data, options);', "\n$jsGoogleChartsImageURITemplate\n")
-                        .subst('<div id="chart_div"></div>', '<div id="chart_div"></div>' ~ "\n\t" ~ '<div id="png_div"></div>');
+                        .subst('<div id="$DIV_ID"></div>', '<div id="$DIV_ID"></div>' ~ "\n\t" ~ '<div id="png_$DIV_ID"></div>');
             }
-            $res
+            $res.subst('$DIV_ID', $div-id, :g);
         }
         default {
             die "The format of a Google Charts template is expected to be one if <jupyter html>.";

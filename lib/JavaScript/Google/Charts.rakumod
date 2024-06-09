@@ -24,9 +24,19 @@ sub js-google-charts-config() is export {
 }
 
 #============================================================
-our proto sub generate-code($data, :$column-names = Whatever, :$format = 'jupyter', :$png-button = False, *%args) {*}
+our proto sub generate-code($data,
+                            :$column-names = Whatever,
+                            :$format = 'jupyter',
+                            Bool:D :$png-button = False,
+                            Str:D :$div-id = 'chart_div',
+                            *%args) is export {*}
 
-our multi sub generate-code($data, :$column-names = Whatever, :$format = 'jupyter', :$png-button = False, *%args) {
+our multi sub generate-code($data,
+                            :$column-names = Whatever,
+                            :$format = 'jupyter',
+                            Bool:D :$png-button = False,
+                            Str:D :$div-id = 'chart_div',
+                            *%args) {
 
     my $data-code = JavaScript::Google::Charts::DataTable::generate-code($data, :$column-names, version => 'row-by-row', n-tabs => 2);
 
@@ -35,7 +45,7 @@ our multi sub generate-code($data, :$column-names = Whatever, :$format = 'jupyte
     %options = reduce(&merge-hash, %default, %options, %args);
     my $options-code = %options ?? to-json(%options) !! '{}' ;
 
-    my $code = JavaScript::Google::Charts::CodeSnippets::MainTemplate(:$format, :$png-button);
+    my $code = JavaScript::Google::Charts::CodeSnippets::MainTemplate(:$format, :$png-button, :$div-id);
 
     return $code
             .subst('$DATA', $data-code)
