@@ -50,10 +50,15 @@ multi sub js-google-charts(Str:D $type, $data, *%args) {
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
-                           :$data!,
-                           :$column-names = Whatever,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
                            :$format = 'jupyter',
                            *%args) {
+    if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
+        my $k = 1;
+        $data = $data.map({ %(name => ($k++).Str, value => $_) }).Array;
+        $column-names = <name value>;
+    }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'BarChart');
 }
@@ -63,15 +68,20 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <pie piechart pie-chart>,
                            :$column-names = Whatever,
                            :$format = 'jupyter',
                            *%args) {
-    my $res = generate-code($data, :$column-names, :$format, |%args);
-    return $res.subst('$CHART_NAME', 'PieChart');
+    my $res = js-google-charts('BarChart', :$data, :$column-names, :$format, |%args);
+    return $res.subst('BarChart', 'PieChart');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bubble bubblechart bubble-chart>,
-                           :$data!,
-                           :$column-names = Whatever,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
                            :$format = 'jupyter',
                            *%args) {
+    if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
+        my $k = 1;
+        $data = $data.map({ %(name => ($k++).Str, x => $k, y => $_, group => $k, size => $_) }).Array;
+        $column-names = <name x y group size>;
+    }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'BubbleChart');
 }
@@ -108,19 +118,28 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <geochart geo-chart>,
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
-                           :$data!,
-                           :$column-names = Whatever,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
                            :$format = 'jupyter',
                            *%args) {
+    if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
+        $data = $data.map({ %(value => $_) }).Array;
+        $column-names = Whatever;
+    }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'Histogram');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <scatter scatter-plot scatterplot list-plot listplot>,
-                           :$data!,
-                           :$column-names = Whatever,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
                            :$format = 'jupyter',
                            *%args) {
+    if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
+        my $k = 1;
+        $data = $data.map({ %(x => $k++, y => $_) }).Array;
+        $column-names = <x y>;
+    }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'ScatterChart');
 }
@@ -131,7 +150,7 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <wordtree word-tree>,
                            :$format = 'jupyter',
                            *%args) {
     if $data ~~ Iterable:D && $data.all ~~ Str:D {
-        $data = $data.map({ %(Phrases => $_) }).Array;
+        $data = $data.map({ %(String => $_) }).Array;
         $column-names = Whatever;
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
