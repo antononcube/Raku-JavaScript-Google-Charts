@@ -12,6 +12,7 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.load('current', {'packages':['gauge']});
 google.charts.load('current', {packages:['wordtree']});
 google.charts.load('current', {'packages':['geochart']});
+google.charts.load('current', {'packages':['table']});
 google.charts.setOnLoadCallback(function() {
     console.log('Google Charts library loaded');
 });
@@ -142,6 +143,21 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <scatter scatter-plot scat
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'ScatterChart');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <table table-chart tablechart>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
+        $data = $data.map({ %(value => $_) }).Array;
+        $column-names = Whatever;
+    }
+    my %default = :showRowNumber, width => '100%', height => '100%';
+    my %args2 = merge-hash(%default, %args);
+    my $res = generate-code($data, :$column-names, :$format, |%args2);
+    return $res.subst('$CHART_NAME', 'Table');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <wordtree word-tree>,
