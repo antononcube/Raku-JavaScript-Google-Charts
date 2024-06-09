@@ -17,7 +17,7 @@ spurt 'pie-chart-1.html', js-google-charts('Pie', @res1, format => 'html');
 
 spurt 'histogram-1.html', js-google-charts('Histogram', @res1, format => 'html');
 
-spurt 'buble-chart-1.html', js-google-charts('BubbleChart', @res1, format => 'html');
+spurt 'buble-chart-1.html', js-google-charts('BubbleChart', @res1, format => 'html', :png-button);
 
 my @res2 = random-tabular-dataset(4, <x y>, generators => [{random-real(10, $_)}, {random-real(50, $_)}]);
 

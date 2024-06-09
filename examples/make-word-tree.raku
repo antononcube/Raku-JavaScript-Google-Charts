@@ -27,4 +27,4 @@ my @phrases =
         'cats are weird',
         'cats eat mice';
 
-say js-google-charts('WordTree', @phrases);
+spurt 'word-tree.html', js-google-charts('WordTree', @phrases, format => 'html');
