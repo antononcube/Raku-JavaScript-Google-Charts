@@ -57,9 +57,18 @@ our multi sub generate-code($data,
 #| Umbrella function
 proto sub js-google-charts(|) is export {*}
 
-multi sub js-google-charts(Str:D $type, $data, *%args) {
-    return js-google-charts($type, :$data, |%args)
+multi sub js-google-charts(Str:D $type, Seq:D $data, *%args) {
+    return js-google-charts($type, data => $data.cache, |%args);
 }
+
+multi sub js-google-charts(Str:D $type, $data, *%args) {
+    return js-google-charts($type, :$data, |%args);
+}
+
+# Does not seem to have an effect.
+#multi sub js-google-charts(Str:D $type, Seq:D :$data!, *%args) {
+#    return js-google-charts($type, data => $data.cache, |%args);
+#}
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
                            :$data! is copy,
