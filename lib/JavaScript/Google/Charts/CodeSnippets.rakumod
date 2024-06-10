@@ -17,6 +17,7 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
       google.charts.load('current', {'packages':['wordtree']});
       google.charts.load('current', {'packages':['geochart']});
       google.charts.load('current', {'packages':['table']});
+      google.charts.load('current', {'packages':['line']});
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart);

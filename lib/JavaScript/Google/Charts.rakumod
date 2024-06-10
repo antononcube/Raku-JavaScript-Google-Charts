@@ -13,6 +13,7 @@ google.charts.load('current', {'packages':['gauge']});
 google.charts.load('current', {'packages':['wordtree']});
 google.charts.load('current', {'packages':['geochart']});
 google.charts.load('current', {'packages':['table']});
+google.charts.load('current', {'packages':['line']});
 google.charts.setOnLoadCallback(function() {
     console.log('Google Charts library loaded');
 });
@@ -141,7 +142,7 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
     return $res.subst('$CHART_NAME', 'Histogram');
 }
 
-multi sub js-google-charts(Str:D $type where *.lc ∈ <scatter scatter-plot scatterplot list-plot listplot>,
+multi sub js-google-charts(Str:D $type where *.lc ∈ <scatterchart scatter scatter-plot scatterplot list-plot listplot>,
                            :$data! is copy,
                            :$column-names is copy = Whatever,
                            :$format = 'jupyter',
@@ -153,6 +154,28 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <scatter scatter-plot scat
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'ScatterChart');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <linechart line-chart list-line-plot listineplot>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+
+    my $res = js-google-charts('ScatterChart', :$data, :$column-names, :$format, |%args);
+    return $res.subst('ScatterChart', 'LineChart');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <line material-lines material-line-chart>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+
+    my $res = js-google-charts('LineChart', :$data, :$column-names, :$format, |%args);
+    $res .= subst('google.visualization.LineChart', 'google.charts.Line');
+    $res .= subst('chart.draw(data, options)', 'chart.draw(data, google.charts.Line.convertOptions(options))');
+    return $res;
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <table table-chart tablechart>,
