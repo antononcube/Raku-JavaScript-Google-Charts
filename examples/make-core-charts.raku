@@ -9,7 +9,11 @@ use Data::Generators;
 
 my @res1 = random-real(120, 12);
 
-spurt 'scater-plot-1.html', js-google-charts('Scatter', @res1, format => 'html');
+spurt 'scatter-plot-1.html', js-google-charts('Scatter', @res1, format => 'html');
+
+spurt 'list-line-plot-1.html', js-google-charts('Line', @res1, format => 'html');
+
+spurt 'material-line-plot-1.html', js-google-charts('Line', @res1, format => 'html');
 
 spurt 'bar-chart-1.html', js-google-charts('Bar', @res1, format => 'html');
 
