@@ -60,44 +60,41 @@ Here is a list of guiding design principles:
     <th>Chart Type</th>
   </tr>
   <tr>
-    <td>Line Chart &#x2713;</td>
+    <td>Annotated Timeline &#x25A2;</td>
     <td>Area Chart &#x25A2;</td>
     <td>Bar Chart &#x2713;</td>
   </tr>
   <tr>
-    <td>Column Chart &#x25A2;</td>
-    <td>Pie Chart &#x2713;</td>
     <td>Bubble Chart &#x2713;</td>
+    <td>Calendar Chart &#x25A2;</td>
+    <td>Candlestick Chart &#x25A2;</td>
+  </tr>
+  <tr>
+    <td>Column Chart &#x25A2;</td>
+    <td>Combo Chart &#x25A2;</td>
+    <td>Gauge &#x2713;</td>
+  </tr>
+  <tr>
+    <td>Geo Chart &#x2713;</td>
+    <td>Histogram &#x2713;</td>
+    <td>Line Chart &#x2713;</td>
+  </tr>
+  <tr>
+    <td>Org Chart &#x25A2;</td>
+    <td>Pie Chart &#x2713;</td>
+    <td>Sankey Diagram &#x25A2;</td>
   </tr>
   <tr>
     <td>Scatter Chart &#x2713;</td>
-    <td>Candlestick Chart &#x25A2;</td>
-    <td>Combo Chart &#x25A2;</td>
-  </tr>
-  <tr>
-    <td>Histogram &#x2713;</td>
-    <td>Geo Chart &#x2713;</td>
-    <td>Calendar Chart &#x25A2;</td>
-  </tr>
-  <tr>
-    <td>TreeMap &#x2713;</td>
-    <td>Gauge &#x2713;</td>
-    <td>Org Chart &#x25A2;</td>
-  </tr>
-  <tr>
-    <td>Sankey Diagram &#x25A2;</td>
     <td>Stepped Area Chart &#x25A2;</td>
     <td>Timeline &#x25A2;</td>
   </tr>
   <tr>
-    <td>Annotated Timeline &#x25A2;</td>
+    <td>TreeMap &#x2713;</td>
     <td>Waterfall Chart &#x25A2;</td>
     <td>Word Tree &#x2713;</td>
   </tr>
 </table>
-
-</body>
-</html>
 
 
 --------
