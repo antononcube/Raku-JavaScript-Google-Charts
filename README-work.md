@@ -51,6 +51,76 @@ Here is a list of guiding design principles:
   
 --------
 
+## The chart types currently implemented 
+
+<html>
+<head>
+  <title>Google Charts Types</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>Chart Type</th>
+    <th>Chart Type</th>
+    <th>Chart Type</th>
+  </tr>
+  <tr>
+    <td>Line Chart &#x2713;</td>
+    <td>Area Chart &#x25A2;</td>
+    <td>Bar Chart &#x2713;</td>
+  </tr>
+  <tr>
+    <td>Column Chart &#x25A2;</td>
+    <td>Pie Chart &#x2713;</td>
+    <td>Bubble Chart &#x2713;</td>
+  </tr>
+  <tr>
+    <td>Scatter Chart &#x2713;</td>
+    <td>Candlestick Chart &#x25A2;</td>
+    <td>Combo Chart &#x25A2;</td>
+  </tr>
+  <tr>
+    <td>Histogram &#x2713;</td>
+    <td>Geo Chart &#x2713;</td>
+    <td>Calendar Chart &#x25A2;</td>
+  </tr>
+  <tr>
+    <td>TreeMap &#x2713;</td>
+    <td>Gauge &#x2713;</td>
+    <td>Org Chart &#x25A2;</td>
+  </tr>
+  <tr>
+    <td>Sankey Diagram &#x25A2;</td>
+    <td>Stepped Area Chart &#x25A2;</td>
+    <td>Timeline &#x25A2;</td>
+  </tr>
+  <tr>
+    <td>Annotated Timeline &#x25A2;</td>
+    <td>Waterfall Chart &#x25A2;</td>
+    <td>Word Tree &#x2713;</td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+
+--------
+
 ## How does it work?
 
 Here is a diagram that summarizes the evaluation path from a Raku plot spec to a browser diagram:
