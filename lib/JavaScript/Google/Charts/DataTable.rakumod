@@ -60,8 +60,8 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
             }
         }
 
-        if $c eq 'role:annotation' {
-            @res.push('data.addColumn({type:\'string\', role:\'annotation\'})');
+        if $c ~~ / role ':' (\w+) / {
+            @res.push("data.addColumn(\{type:'string', role:'{$0.Str}'\})");
         } else {
             @res.push("data.addColumn('{ $col-type }', '$c');");
         }
