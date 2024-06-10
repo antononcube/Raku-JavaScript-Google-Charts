@@ -23,8 +23,7 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
       google.charts.setOnLoadCallback(drawChart);
 
       // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
+      // instantiates the chart, passes in the data, and draws it.
       function drawChart() {
 
         // Create the data table.
