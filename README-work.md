@@ -12,18 +12,8 @@ The commands of the package generate JavaScript code that produces (nice)
 See the video [AAv1].
 
 The package JavaScript graphs can be also included in HTML and Markdown documents.
-See the videos [AAv2, AAv3].
 
-For illustrative examples see the Jupyter notebook
-["Tests-for-JavaScript-D3"](https://nbviewer.org/github/antononcube/Raku-JavaScript-D3/blob/main/resources/Tests-for-JavaScript-D3.ipynb).
-
-The (original versions of the) JavaScript snippets used in this package are (mostly) taken from
-["The D3.js Graph Gallery"](https://d3-graph-gallery.com/index.html).
-
-Here is a corresponding video demo (≈7 min): ["The Raku-ju hijack hack of D3.js"](https://www.youtube.com/watch?v=YIhx3FBWayo) (≈ 7 min.)
-
-And here is the demo notebook:
-["The-Raku-ju-hijack-hack-for-D3.js-demo"](https://nbviewer.org/github/antononcube/Raku-JavaScript-D3/blob/main/resources/The-Raku-ju-hijack-hack-for-D3.js-demo.ipynb).
+One nice feature of Google Charts is that it allows the download of the plots and charts made with it.
 
 --------
 
@@ -148,7 +138,7 @@ The Raku package
 ["JavaScript::D3"](https://raku.land/zef:antononcube/JavaScript::D3), [AAp1, AAv1],
 provides a similar set of JavaScript computed plots and charts using the library [D3.js](https://d3js.org).
 
-D3.js is (much more) of lower level library than Google Charts.
+D3.js is (much more) of lower level library than Google Charts. 
 
 **Remark:** Google Charts is customizable, but its set of plots and charts is a streamlined 
 and relatively rigid compared to D3.js.
