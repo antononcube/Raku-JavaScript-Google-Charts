@@ -9,7 +9,6 @@ This package is intended to be used in Jupyter notebooks with the
 ["Jupyter::Chatbook"](https://github.com/antononcube/Raku-Jupyter-Chatbook), [AAp4].
 The commands of the package generate JavaScript code that produces (nice) 
 [Google Charts plots or charts](https://developers.google.com/chart/interactive/docs/gallery).
-See the video [AAv1].
 
 The package JavaScript graphs can be also included in HTML and Markdown documents.
 
