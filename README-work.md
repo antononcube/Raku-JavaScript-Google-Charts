@@ -71,7 +71,7 @@ Here is a list of guiding design principles:
   <tr>
     <td>Org Chart &#x25A2;</td>
     <td>Pie Chart &#x2713;</td>
-    <td>Sankey Diagram &#x25A2;</td>
+    <td>Sankey Diagram &#x2713;</td>
   </tr>
   <tr>
     <td>Scatter Chart &#x2713;</td>
