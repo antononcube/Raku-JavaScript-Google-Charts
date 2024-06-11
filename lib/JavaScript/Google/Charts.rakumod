@@ -8,12 +8,6 @@ use JSON::Fast;
 
 #============================================================
 my $jsGoogleChartsConfigCode = q:to/END/;
-google.charts.load('current', {'packages':['corechart']});
-google.charts.load('current', {'packages':['gauge']});
-google.charts.load('current', {'packages':['wordtree']});
-google.charts.load('current', {'packages':['geochart']});
-google.charts.load('current', {'packages':['table']});
-google.charts.load('current', {'packages':['line']});
 google.charts.setOnLoadCallback(function() {
     console.log('Google Charts library loaded');
 });
@@ -21,7 +15,7 @@ END
 
 #| Configuration JavaScript code to be executed in %%javascript magic cell in a Jupyter notebook
 sub js-google-charts-config() is export {
-    return $jsGoogleChartsConfigCode;
+    return JavaScript::Google::CodeSnippets::GetGoogleChartsPackages() ~ "\n" ~ $jsGoogleChartsConfigCode;
 }
 
 #============================================================
@@ -50,7 +44,7 @@ our multi sub generate-code($data,
 
     return $code
             .subst('$DATA', $data-code)
-            .subst('$OPTIONS', $options-code);
+            .subst(/ ^^ (\h*) '$OPTIONS' /, { $options-code.lines.map(-> $l {"{$0.Str}$l"} ).join("\n") });
 }
 
 #============================================================
@@ -179,6 +173,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'Histogram');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <sankey sankeydiagram sankey-diagram sankeychart sankey-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'Sankey');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <scatterchart scatter scatter-plot scatterplot list-plot listplot>,
