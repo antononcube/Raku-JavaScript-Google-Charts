@@ -82,11 +82,8 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
         $column-names = <name value>;
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
-    return do if $horizontal {
-        $res.subst('$CHART_NAME', 'BarChart');
-    } else {
-        $res.subst('$CHART_NAME', 'ColumnChart');
-    }
+
+    return $res.subst('$CHART_NAME', $horizontal ?? 'BarChart' !! 'ColumnChart');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <column columnchart vertical-bar-chart>,
@@ -109,11 +106,21 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <pie piechart pie-chart>,
 multi sub js-google-charts(Str:D $type where *.lc ∈ <area areachart>,
                            :$data!,
                            :$column-names = Whatever,
+                           Bool :s(:$stepped) = False,
                            :$format = 'jupyter',
                            *%args) {
     my %args2 = %args.grep({ $_.key ne 'horizontal' });
     my $res = js-google-charts('BarChart', :$data, :$column-names, :horizontal, :$format, |%args2);
-    return $res.subst('BarChart', 'AreaChart');
+    return $res.subst('BarChart', $stepped ?? 'SteppedAreaChart' !! 'AreaChart');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <stepped-area steppedareachart stepped-area-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           Bool :s(:$stepped) = False,
+                           :$format = 'jupyter',
+                           *%args) {
+    return js-google-charts('AreaChart', :$data, :$column-names, :stepped, :$format, |%args);
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bubble bubblechart bubble-chart>,
