@@ -73,6 +73,7 @@ multi sub js-google-charts(Str:D $type, $data, *%args) {
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
                            :$data! is copy,
                            :$column-names is copy = Whatever,
+                           Bool :h(:$horizontal) = True,
                            :$format = 'jupyter',
                            *%args) {
     if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
@@ -81,7 +82,19 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
         $column-names = <name value>;
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
-    return $res.subst('$CHART_NAME', 'BarChart');
+    return do if $horizontal {
+        $res.subst('$CHART_NAME', 'BarChart');
+    } else {
+        $res.subst('$CHART_NAME', 'ColumnChart');
+    }
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <columnchart vertical-bar-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    return js-google-charts('BarChart', :$data, :$column-names, :!horizontal, :$format, |%args);
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <pie piechart pie-chart>,
