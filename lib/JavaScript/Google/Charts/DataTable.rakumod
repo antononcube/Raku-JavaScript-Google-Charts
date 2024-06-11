@@ -51,9 +51,9 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
         my $col-type = do given $data.head{$c} {
             when $c eq 'role:annotation' { 'string' }
             when DateTime:D { 'datetime' }
+            when Str:D { 'string' }
             when Bool:D { 'boolean' }
             when Numeric:D { 'number' }
-            when Str:D { 'string' }
             when Associative:D { 'number' }
             default {
                 die "Do not know how to process ⎡$_⎦.";
