@@ -50,7 +50,7 @@ Here is a list of guiding design principles:
   </tr>
   <tr>
     <td>Annotated Timeline &#x25A2;</td>
-    <td>Area Chart &#x25A2;</td>
+    <td>Area Chart &#x2713;</td>
     <td>Bar Chart &#x2713;</td>
   </tr>
   <tr>
@@ -59,7 +59,7 @@ Here is a list of guiding design principles:
     <td>Candlestick Chart &#x25A2;</td>
   </tr>
   <tr>
-    <td>Column Chart &#x25A2;</td>
+    <td>Column Chart &#x2713;</td>
     <td>Combo Chart &#x25A2;</td>
     <td>Gauge &#x2713;</td>
   </tr>
@@ -75,7 +75,7 @@ Here is a list of guiding design principles:
   </tr>
   <tr>
     <td>Scatter Chart &#x2713;</td>
-    <td>Stepped Area Chart &#x25A2;</td>
+    <td>Stepped Area Chart &#x2713;</td>
     <td>Timeline &#x25A2;</td>
   </tr>
   <tr>
