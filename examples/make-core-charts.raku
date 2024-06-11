@@ -15,7 +15,7 @@ spurt 'list-line-plot-1.html', js-google-charts('Line', @res1, format => 'html')
 
 spurt 'material-line-plot-1.html', js-google-charts('Line', @res1, format => 'html');
 
-spurt 'bar-chart-1.html', js-google-charts('Bar', @res1, format => 'html');
+spurt 'bar-chart-1.html', js-google-charts('Bar', @res1, format => 'html'):!h;
 
 spurt 'pie-chart-1.html', js-google-charts('Pie', @res1, format => 'html');
 
