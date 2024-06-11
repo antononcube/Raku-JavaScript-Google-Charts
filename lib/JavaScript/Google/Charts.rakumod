@@ -89,7 +89,7 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
     }
 }
 
-multi sub js-google-charts(Str:D $type where *.lc ∈ <columnchart vertical-bar-chart>,
+multi sub js-google-charts(Str:D $type where *.lc ∈ <column columnchart vertical-bar-chart>,
                            :$data!,
                            :$column-names = Whatever,
                            :$format = 'jupyter',
@@ -104,6 +104,16 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <pie piechart pie-chart>,
                            *%args) {
     my $res = js-google-charts('BarChart', :$data, :$column-names, :$format, |%args);
     return $res.subst('BarChart', 'PieChart');
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <area areachart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my %args2 = %args.grep({ $_.key ne 'horizontal' });
+    my $res = js-google-charts('BarChart', :$data, :$column-names, :horizontal, :$format, |%args2);
+    return $res.subst('BarChart', 'AreaChart');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bubble bubblechart bubble-chart>,
