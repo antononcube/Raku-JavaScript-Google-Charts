@@ -18,8 +18,8 @@ my @res = random-tabular-dataset(6, <From To Weight>,
 say @res;
 
 spurt 'sankey-diagram.html',
-        js-google-charts('BarChart',
+        js-google-charts('SankeyDiagram',
                 @res,
                 :isStacked,
                 bar => { groupWidth => '75%' },
-                format => 'html').subst('BarChart', 'Sankey').subst("'packages':['gauge']", "'packages':['sankey']");
+                format => 'html');
