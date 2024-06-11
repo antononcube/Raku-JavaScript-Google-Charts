@@ -19,9 +19,13 @@ my @res = random-tabular-dataset(4, 4,
 say @res;
 
 spurt 'stacked-bar-chart-1.html',
-        js-google-charts('Bar',
+        js-google-charts('BarChart',
                 @res,
-                :horizontal,
+                :!horizontal,
                 :isStacked,
                 bar => { groupWidth => '75%' },
                 format => 'html');
+
+# Note that a pie- or an area chart can be
+# simply obtained by applying this substitution:
+#       subst('ColumnChart', 'AreaChart');
