@@ -2,6 +2,24 @@ unit module JavaScript::Google::Charts::CodeSnippets;
 
 
 #============================================================
+# Package HTML template
+#============================================================
+
+my $jsGoogleChartsPackages = q:to/END/;
+google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {'packages':['gauge']});
+google.charts.load('current', {'packages':['wordtree']});
+google.charts.load('current', {'packages':['geochart']});
+google.charts.load('current', {'packages':['table']});
+google.charts.load('current', {'packages':['line']});
+google.charts.load('current', {'packages':['sankey']});
+END
+
+our sub GetGoogleChartsPackages() {
+    return $jsGoogleChartsPackages;
+}
+
+#============================================================
 # Main HTML template
 #============================================================
 my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
@@ -12,12 +30,7 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
     <script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.load('current', {'packages':['gauge']});
-      google.charts.load('current', {'packages':['wordtree']});
-      google.charts.load('current', {'packages':['geochart']});
-      google.charts.load('current', {'packages':['table']});
-      google.charts.load('current', {'packages':['line']});
+      $PACKAGES
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart);
@@ -30,7 +43,8 @@ my $jsGoogleChartsMainTemplate-HTML = q:to/END/;
         var data = $DATA;
 
         // Set chart options
-        var options = $OPTIONS;
+        var options =
+            $OPTIONS;
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.$CHART_NAME(document.getElementById('$DIV_ID'));
@@ -71,7 +85,8 @@ my $jsGoogleChartsMainTemplate = q:to/END/;
     google.charts.setOnLoadCallback(function() {
         var data = $DATA;
 
-        var options = $OPTIONS;
+        var options =
+            $OPTIONS;
 
         var chart = new google.visualization.$CHART_NAME(element.get(0));
 
@@ -88,6 +103,7 @@ our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False, St
         when 'jupyter' { $jsGoogleChartsMainTemplate }
         when 'html' {
             my $res = $jsGoogleChartsMainTemplate-HTML;
+            $res .= subst( / ^^ (\h+) '$PACKAGES' /, { GetGoogleChartsPackages().lines.map(-> $l {"{$0.Str}$l"}).join("\n") });
             if $png-button {
                 $res = $res
                         .subst('chart.draw(data, options);', "\n$jsGoogleChartsImageURITemplate\n")
