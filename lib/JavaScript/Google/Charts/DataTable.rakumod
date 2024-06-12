@@ -10,6 +10,7 @@ sub type-ordinal($t) {
         when $_ ~~ Bool:D { 4 }
         when $_ ~~ Numeric:D { 2 }
         when $_ ~~ DateTime:D { 3 }
+        when $_ ~~ Date:D { 4 }
         default { 10 }
     };
 }
@@ -51,6 +52,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
         my $col-type = do given $data.head{$c} {
             when $c eq 'role:annotation' { 'string' }
             when DateTime:D { 'datetime' }
+            when Date:D { 'datetime' }
             when Str:D { 'string' }
             when Bool:D { 'boolean' }
             when Numeric:D { 'number' }
@@ -78,6 +80,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
                 when Bool:D { $_ ?? 'true' !! 'false' }
                 when Numeric:D { $_ }
                 when DateTime:D { "new Date({ $_.year }, { $_.month }, { $_.day })" }
+                when Date:D { "new Date({ $_.year }, { $_.month }, { $_.day })" }
                 when Associative:D { to-json($_) }
                 default {
                     die "Do not know how to process ⎡$_⎦.";
