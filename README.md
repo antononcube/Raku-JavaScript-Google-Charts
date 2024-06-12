@@ -76,7 +76,7 @@ Here is a list of guiding design principles:
   <tr>
     <td>Scatter Chart &#x2713;</td>
     <td>Stepped Area Chart &#x2713;</td>
-    <td>Timeline &#x25A2;</td>
+    <td>Timeline &#x2713;</td>
   </tr>
   <tr>
     <td>TreeMap &#x2713;</td>
