@@ -13,6 +13,7 @@ google.charts.load('current', {'packages':['geochart']});
 google.charts.load('current', {'packages':['table']});
 google.charts.load('current', {'packages':['line']});
 google.charts.load('current', {'packages':['sankey']});
+google.charts.load('current', {'packages':['timeline']});
 END
 
 our sub GetGoogleChartsPackages() {

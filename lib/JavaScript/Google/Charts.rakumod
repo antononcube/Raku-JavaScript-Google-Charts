@@ -235,6 +235,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <table table-chart tablech
     return $res.subst('$CHART_NAME', 'Table');
 }
 
+multi sub js-google-charts(Str:D $type where *.lc ∈ <timeline timeline-chart timelinechart>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'Timeline');
+}
+
 multi sub js-google-charts(Str:D $type where *.lc ∈ <wordtree word-tree>,
                            :$data! is copy,
                            :$column-names is copy = Whatever,
