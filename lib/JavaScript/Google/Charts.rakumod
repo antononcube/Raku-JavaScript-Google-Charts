@@ -63,14 +63,6 @@ multi sub js-google-charts(Str:D $type, $data, *%args) {
 #multi sub js-google-charts(Str:D $type, Seq:D :$data!, *%args) {
 #    return js-google-charts($type, data => $data.cache, |%args);
 #}
-multi sub js-google-charts(Str:D $type where *.lc ∈ <combo combochart combo-chart>,
-                           :$data! is copy,
-                           :$column-names is copy = Whatever,
-                           :$format = 'jupyter',
-                           *%args) {
-    my $res = generate-code($data, :$column-names, :$format, |%args);
-    return $res.subst('$CHART_NAME', 'ComboChart');
-}
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
                            :$data! is copy,
@@ -230,6 +222,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <line material-lines mater
     $res .= subst('google.visualization.LineChart', 'google.charts.Line');
     $res .= subst('chart.draw(data, options)', 'chart.draw(data, google.charts.Line.convertOptions(options))');
     return $res;
+}
+
+multi sub js-google-charts(Str:D $type where *.lc ∈ <combo combochart combo-chart>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = js-google-charts('ScatterChart', :$data, :$column-names, :$format, |%args);
+    return $res.subst('ScatterChart', 'ComboChart');
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <table table-chart tablechart>,
