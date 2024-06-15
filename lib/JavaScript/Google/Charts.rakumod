@@ -193,7 +193,7 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <scatterchart scatter scat
         my $k = 1;
         $data = $data.map({ %(x => $k++, y => $_) }).Array;
         $column-names = <x y>;
-    } elsif is-reshapable(Iterable, Iterable, $data) {
+    } elsif is-reshapable(Iterable, Positional, $data) || is-reshapable(Iterable, Seq, $data) {
         my $k = $data.head.elems;
         $column-names = (^$k)».Str;
         $data = $data.map({ $column-names.Array Z=> $_.Array })».Hash.Array;
@@ -230,7 +230,7 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <combo combochart combo-ch
                            :$format = 'jupyter',
                            *%args) {
     my $res = js-google-charts('ScatterChart', :$data, :$column-names, :$format, |%args);
-    return $res.subst('ScatterChart', 'ComboChart');
+    return $res.subst('ScatterChart', 'ComboChart'):g;
 }
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <table table-chart tablechart>,
