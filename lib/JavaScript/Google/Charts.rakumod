@@ -63,6 +63,14 @@ multi sub js-google-charts(Str:D $type, $data, *%args) {
 #multi sub js-google-charts(Str:D $type, Seq:D :$data!, *%args) {
 #    return js-google-charts($type, data => $data.cache, |%args);
 #}
+multi sub js-google-charts(Str:D $type where *.lc ∈ <combo combochart combo-chart>,
+                           :$data! is copy,
+                           :$column-names is copy = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'ComboChart');
+}
 
 multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
                            :$data! is copy,
