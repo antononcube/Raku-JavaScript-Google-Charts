@@ -193,6 +193,10 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <scatterchart scatter scat
         my $k = 1;
         $data = $data.map({ %(x => $k++, y => $_) }).Array;
         $column-names = <x y>;
+    } elsif is-reshapable(Iterable, Iterable, $data) {
+        my $k = $data.head.elems;
+        $column-names = (^$k)».Str;
+        $data = $data.map({ $column-names.Array Z=> $_.Array })».Hash.Array;
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
     return $res.subst('$CHART_NAME', 'ScatterChart');
