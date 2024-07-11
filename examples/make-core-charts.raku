@@ -28,3 +28,8 @@ spurt 'scatter-plot-2.html', js-google-charts('Scatter', column-names => <x y>, 
 my @data3 = random-real(120, 40).rotor(2);
 
 spurt 'scatter-plot-3.html', js-google-charts('Scatter', @data3, format => 'html');
+
+my @data4 = random-word(12) Z=> random-real(120, 12);
+
+spurt 'bar-chart-4.html', js-google-charts('Bar', @data4, format => 'html');
+
