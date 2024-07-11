@@ -74,7 +74,8 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <bar barchart bar-chart>,
         my $k = 1;
         $data = $data.map({ %(name => ($k++).Str, value => $_) }).Array;
         $column-names = <name value>;
-    } elsif $data ~~ Map:D && $data.values.all ~~ Numeric:D {
+    } elsif $data ~~ Map:D && $data.values.all ~~ Numeric:D ||
+            $data ~~ Positional:D && $data.all ~~ Pair:D && $data».value.all ~~ Numeric:D {
         $data = $data.map({ %(name => $_.key, value => $_.value) }).Array;
         $column-names = <name value>;
     }
