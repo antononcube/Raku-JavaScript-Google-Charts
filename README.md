@@ -60,7 +60,7 @@ Here is a list of guiding design principles:
   </tr>
   <tr>
     <td>Column Chart &#x2713;</td>
-    <td>Combo Chart &#x25A2;</td>
+    <td>Combo Chart &#x2713;</td>
     <td>Gauge &#x2713;</td>
   </tr>
   <tr>
