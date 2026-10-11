@@ -2,6 +2,7 @@ unit module JavaScript::Google::Charts;
 
 use JavaScript::Google::Charts::CodeSnippets;
 use JavaScript::Google::Charts::DataTable;
+use JavaScript::Google::Charts::Dashboard;
 use Data::TypeSystem;
 use Hash::Merge;
 use JSON::Fast;
@@ -16,6 +17,16 @@ END
 #| Configuration JavaScript code to be executed in %%javascript magic cell in a Jupyter notebook
 sub js-google-charts-config() is export {
     return JavaScript::Google::CodeSnippets::GetGoogleChartsPackages() ~ "\n" ~ $jsGoogleChartsConfigCode;
+}
+
+#| Generate JavaScript or HTML for a dashboard of charts and controls sharing one data table.
+#| The specification is an Associative with data, controls, charts, and bindings entries.
+sub js-google-charts-dashboard(Associative:D $spec, *%args) is export {
+    my %dashboard-spec = $spec.Hash;
+    for %args.kv -> $key, $value {
+        %dashboard-spec{$key} = $value;
+    }
+    JavaScript::Google::Charts::Dashboard::generate-dashboard-code(%dashboard-spec);
 }
 
 #============================================================

@@ -14,6 +14,7 @@ google.charts.load('current', {'packages':['table']});
 google.charts.load('current', {'packages':['line']});
 google.charts.load('current', {'packages':['sankey']});
 google.charts.load('current', {'packages':['timeline']});
+google.charts.load('current', {'packages':['controls']});
 END
 
 our sub GetGoogleChartsPackages() {
@@ -97,6 +98,42 @@ my $jsGoogleChartsMainTemplate = q:to/END/;
 END
 
 #============================================================
+# Dashboard templates
+#============================================================
+my $jsGoogleChartsDashboardTemplate-HTML = q:to/END/;
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      $PACKAGES
+
+      google.charts.setOnLoadCallback(drawDashboard);
+
+      function drawDashboard() {
+$DASHBOARD_CODE
+      }
+    </script>
+  </head>
+
+  <body>
+$BODY
+  </body>
+</html>
+END
+
+my $jsGoogleChartsDashboardTemplate-Jupyter = q:to/END/;
+(function(element) {
+    element.get(0).innerHTML = $BODY;
+
+    google.charts.setOnLoadCallback(function() {
+$DASHBOARD_CODE
+    });
+})(element);
+END
+
+#============================================================
 # Main templates access
 #============================================================
 our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False, Str:D :$div-id = 'chart_div') {
@@ -114,6 +151,21 @@ our sub MainTemplate(Str:D :$format = 'jupyter', Bool:D :$png-button = False, St
         }
         default {
             die "The format of a Google Charts template is expected to be one if <jupyter html>.";
+        }
+    }
+}
+
+#| Template for a Google Charts dashboard. The caller supplies the HTML body and
+#| JavaScript body because dashboard layouts and bindings are declarative.
+our sub DashboardTemplate(Str:D :$format = 'jupyter') {
+    return do given $format.lc {
+        when 'jupyter' { $jsGoogleChartsDashboardTemplate-Jupyter }
+        when 'html' {
+            my $res = $jsGoogleChartsDashboardTemplate-HTML;
+            $res.subst( / ^^ (\h+) '$PACKAGES' /, { GetGoogleChartsPackages().lines.map(-> $l {"{$0.Str}$l"}).join("\n") });
+        }
+        default {
+            die "The format of a Google Charts dashboard template is expected to be one if <jupyter html>.";
         }
     }
 }

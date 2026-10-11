@@ -176,6 +176,51 @@ js-google-charts('Bubble', @res2, column-names => <label x y group z>, format =>
 
 --------
 
+## Dashboards and controls
+
+Use `js-google-charts-dashboard` to generate a dashboard whose controls and
+charts share one data table. The specification is an associative Raku value
+that is also suitable for JSON-oriented configuration after parsing it with
+`JSON::Fast`.
+
+```perl6, eval=FALSE
+use JavaScript::Google::Charts;
+
+my @data = (
+    { name => 'Alice', region => 'East', sales => 12 },
+    { name => 'Bob',   region => 'West', sales => 8  },
+    { name => 'Cara',  region => 'East', sales => 15 },
+);
+
+my %spec = (
+    data => @data,
+    column-names => <name region sales>,
+    controls => [
+        %(id => 'region', type => 'CategoryFilter',
+          options => %(filterColumnLabel => 'region')),
+    ],
+    charts => [
+        %(id => 'sales', type => 'Column',
+          view => %(columns => [0, 2]),
+          options => %(title => 'Sales')),
+    ],
+    bindings => [
+        %(controls => <region>, charts => <sales>),
+    ],
+    format => 'html',
+    div-id => 'sales-dashboard',
+);
+
+spurt 'sales-dashboard.html', js-google-charts-dashboard(%spec);
+```
+
+Each control requires `id`, `type`, and a `filterColumnLabel` or
+`filterColumnIndex` in `options`. Each chart requires `id` and `type`; its
+optional `view` chooses columns from the shared data table. Bindings refer to
+control and chart IDs and may name one or many of each.
+
+--------
+
 ## References
 
 ### Articles

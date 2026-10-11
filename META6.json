@@ -17,7 +17,8 @@
   "provides": {
     "JavaScript::Google::Charts": "lib/JavaScript/Google/Charts.rakumod",
     "JavaScript::Google::Charts::CodeSnippets": "lib/JavaScript/Google/Charts/CodeSnippets.rakumod",
-    "JavaScript::Google::Charts::DataTable": "lib/JavaScript/Google/Charts/DataTable.rakumod"
+    "JavaScript::Google::Charts::DataTable": "lib/JavaScript/Google/Charts/DataTable.rakumod",
+    "JavaScript::Google::Charts::Dashboard": "lib/JavaScript/Google/Charts/Dashboard.rakumod"
   },
   "resources": [
   ],
