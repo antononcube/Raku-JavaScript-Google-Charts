@@ -25,6 +25,16 @@ our multi sub generate-code($data, :$column-names = Whatever, :$version = 'row-b
     }
 }
 
+# Find a representative value for sparse columns. In particular, this allows
+# one chart series to be absent (`Nil`) in rows that belong to another series.
+sub first-defined-column-value($data, Str:D $column) {
+    for |$data -> %record {
+        my $value = %record{$column};
+        return $value if $value.defined;
+    }
+    Nil
+}
+
 sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-tabs = 0) {
 
     if !is-reshapable($data, iterable-type => Iterable, record-type => Associative) {
@@ -49,16 +59,20 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
     # Declare columns
     for @colnames -> $c {
 
-        my $col-type = do given $data.head{$c} {
-            when $c eq 'role:annotation' { 'string' }
-            when DateTime:D { 'datetime' }
-            when Date:D { 'date' }
-            when Str:D { 'string' }
-            when Bool:D { 'boolean' }
-            when Numeric:D { 'number' }
-            when Associative:D { 'number' }
-            default {
-                die "Do not know how to process ⎡$_⎦.";
+        my $sample = first-defined-column-value($data, $c);
+        my $col-type = do if $c ~~ / role ':' (\w+) / {
+            'string'
+        } else {
+            given $sample {
+                when DateTime:D { 'datetime' }
+                when Date:D { 'date' }
+                when Str:D { 'string' }
+                when Bool:D { 'boolean' }
+                when Numeric:D { 'number' }
+                when Associative:D { 'number' }
+                default {
+                    die "Do not know how to determine the type of column ⎡$c⎦; it has no defined values.";
+                }
             }
         }
 
@@ -76,6 +90,7 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
 
         %h = %h.map({
             my $v = do given $_.value {
+                when !.defined { 'null' }
                 when Str:D { "'{ $_.subst(:g, '\'', '\\\'') }'" }
                 when Bool:D { $_ ?? 'true' !! 'false' }
                 when Numeric:D { $_ }
@@ -90,7 +105,8 @@ sub generate-code-row-by-row($data, :$column-names is copy = Whatever, UInt :$n-
             $_.key => $v
         });
 
-        @data-rows.push("[{ %h{|@colnames}.join(', ') }]")
+        my @row = @colnames.map({ %h{$_} // 'null' });
+        @data-rows.push("[{ @row.join(', ') }]")
     }
 
     @res.push('data.addRows([');
