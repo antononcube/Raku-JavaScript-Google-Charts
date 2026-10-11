@@ -19,16 +19,6 @@ sub js-google-charts-config() is export {
     return JavaScript::Google::CodeSnippets::GetGoogleChartsPackages() ~ "\n" ~ $jsGoogleChartsConfigCode;
 }
 
-#| Generate JavaScript or HTML for a dashboard of charts and controls sharing one data table.
-#| The specification is an Associative with data, controls, charts, and bindings entries.
-sub js-google-charts-dashboard(Associative:D $spec, *%args) is export {
-    my %dashboard-spec = $spec.Hash;
-    for %args.kv -> $key, $value {
-        %dashboard-spec{$key} = $value;
-    }
-    JavaScript::Google::Charts::Dashboard::generate-dashboard-code(%dashboard-spec);
-}
-
 #============================================================
 our proto sub generate-code($data,
                             :$column-names = Whatever,
@@ -287,4 +277,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <wordtree word-tree>,
 
 multi sub js-google-charts(Str:D $type, :$data = Empty, *%args) {
     die "Unknown or unimplemented chart type ⎡$type⎦.";
+}
+
+#============================================================
+#| Generate JavaScript or HTML for a dashboard of charts and controls sharing one data table.
+#| The specification is an Associative with data, controls, charts, and bindings entries.
+sub js-google-charts-dashboard(Associative:D $spec, *%args) is export {
+    my %dashboard-spec = $spec.Hash;
+    for %args.kv -> $key, $value {
+        %dashboard-spec{$key} = $value;
+    }
+    JavaScript::Google::Charts::Dashboard::generate-dashboard-code(%dashboard-spec);
 }
