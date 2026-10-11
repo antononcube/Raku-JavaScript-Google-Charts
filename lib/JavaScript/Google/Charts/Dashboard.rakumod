@@ -19,6 +19,7 @@ sub chart-wrapper-type(Str:D $type) {
         when $_ ∈ <bubble bubblechart bubble-chart> { 'BubbleChart' }
         when $_ ∈ <gauge gaugechart gauge-chart> { 'Gauge' }
         when $_ ∈ <geo geochart geo-chart> { 'GeoChart' }
+        when $_ ∈ <calendar calendarchart calendar-chart> { 'Calendar' }
         when $_ ∈ <hist histogram> { 'Histogram' }
         when $_ ∈ <sankey sankeydiagram sankey-diagram sankeychart sankey-chart> { 'Sankey' }
         when $_ ∈ <scatter scatterchart scatter-plot scatterplot list-plot listplot> { 'ScatterChart' }

@@ -14,6 +14,7 @@ google.charts.load('current', {'packages':['table']});
 google.charts.load('current', {'packages':['line']});
 google.charts.load('current', {'packages':['sankey']});
 google.charts.load('current', {'packages':['timeline']});
+google.charts.load('current', {'packages':['calendar']});
 google.charts.load('current', {'packages':['controls']});
 END
 

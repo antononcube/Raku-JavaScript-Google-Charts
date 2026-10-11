@@ -167,6 +167,15 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <geochart geo-chart>,
     return $res.subst('$CHART_NAME', 'GeoChart');
 }
 
+multi sub js-google-charts(Str:D $type where *.lc ∈ <calendar calendarchart calendar-chart>,
+                           :$data!,
+                           :$column-names = Whatever,
+                           :$format = 'jupyter',
+                           *%args) {
+    my $res = generate-code($data, :$column-names, :$format, |%args);
+    return $res.subst('$CHART_NAME', 'Calendar');
+}
+
 multi sub js-google-charts(Str:D $type where *.lc ∈ <hist histogram>,
                            :$data! is copy,
                            :$column-names is copy = Whatever,

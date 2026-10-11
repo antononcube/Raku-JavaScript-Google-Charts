@@ -55,7 +55,7 @@ Here is a list of guiding design principles:
   </tr>
   <tr>
     <td>Bubble Chart &#x2713;</td>
-    <td>Calendar Chart &#x25A2;</td>
+    <td>Calendar Chart &#x2713;</td>
     <td>Candlestick Chart &#x25A2;</td>
   </tr>
   <tr>
