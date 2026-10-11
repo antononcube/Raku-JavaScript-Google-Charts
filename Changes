@@ -1,0 +1,6 @@
+Changes of the Raku package "JavaScript::Google::Charts"
+
+0.1.0 2026-10-11
+    - Controls and dashboards support.
+    - Implemented Calendar Chart.
+    - Special handling of Raku Nil to JSON null in order to able to plot wide form data (with Nils).
