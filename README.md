@@ -40,7 +40,7 @@ Here is a list of guiding design principles:
   
 --------
 
-## The chart types currently implemented 
+## The chart types currently implemented
 
 <table>
   <tr>
