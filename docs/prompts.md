@@ -25,3 +25,57 @@ Good. I have a Raku data of the form `[{x => 1.3, y => 3.3, index => 0, level =>
 make a Raku script in "./examples" that creates a dashboard with control for the index 
 that scatter-plots all points with index up to slider's value.
 ```
+
+----
+
+## Proper respect for column names
+
+````text
+It looks like the named argument column-names is not respected in the calls of `js-google-charts`.
+So, I am using `.subst` like in the code below. Any suggestions to fix this?
+
+```raku
+#% html
+my @wide-data = @fin-data.kv.map(-> $i, @point {
+    %(
+        x => DateTime.new(Instant.from-posix(@point.head - $date-offset)),
+        data => @point.tail,
+        fit => @q-funcs[0](@point.head),
+        anomaly => $i ∈ @pos ?? @point.tail !! Nil
+    )
+}).Array;
+
+say deduce-type(@wide-data);
+
+js-google-charts('Scatter', 
+    @wide-data.map(*<x data fit anomaly>),
+    title => 'Financial data, fit, and anomalies',
+    :$titleTextStyle,
+    series => { 
+        0 => {color => 'Gray', pointSize => 2}, 
+        1 => {color => 'SteelBlue', type => 'line', lineWidth => 3, pointSize => 0},
+        2 => {color => 'Red', pointSize => 3},
+    },
+    legend => {
+        position => 'right',
+        textStyle => {
+            color => '#dad5d5',
+            fontSize => 12
+        }
+    },
+    hAxis => {
+        title => 'Date',
+        format => 'yyyy-MM-dd'
+    },
+    :$backgroundColor, 
+    :$chartArea, 
+    :$format,
+    :700width,
+    :450height,
+    div-id => 'fin-data-outliers'
+)
+.subst("data.addColumn('number', '1')", "data.addColumn('number', 'data')")
+.subst("data.addColumn('number', '2')", "data.addColumn('number', 'fit')")
+.subst("data.addColumn('number', '3')", "data.addColumn('number', 'anomaly')")
+```
+````
