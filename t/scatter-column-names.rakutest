@@ -1,0 +1,32 @@
+use Test;
+use lib 'lib';
+use JavaScript::Google::Charts;
+
+my $code = js-google-charts(
+    'Scatter',
+    [[1, 2, Nil, 4], [5, 6, 7, Nil]],
+    column-names => <x data fit anomaly>,
+);
+
+for <x data fit anomaly> -> $name {
+    like $code, / "data.addColumn('number', '" $name "')" /,
+        "uses the supplied column name '$name'";
+}
+
+unlike $code, / "data.addColumn('number', '1')" /,
+    'does not replace supplied column names with positional indexes';
+
+my $numeric-code = js-google-charts(
+    'Scatter',
+    [10, 20],
+    column-names => <index value>,
+);
+
+like $numeric-code, / "[1, 10]" /,
+    'uses supplied names when converting numeric data into rows';
+like $numeric-code, / "data.addColumn('number', 'index')" /,
+    'uses supplied numeric x-column name';
+like $numeric-code, / "data.addColumn('number', 'value')" /,
+    'uses supplied numeric y-column name';
+
+done-testing;

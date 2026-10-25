@@ -204,12 +204,20 @@ multi sub js-google-charts(Str:D $type where *.lc ∈ <scatterchart scatter scat
                            :$format = 'jupyter',
                            *%args) {
     if $data ~~ Iterable:D && $data.all ~~ Numeric:D {
-        my $k = 1;
-        $data = $data.map({ %(x => $k++, y => $_) }).Array;
-        $column-names = <x y>;
+
+        $column-names = <x y> if $column-names.isa(Whatever);
+        my @names = $column-names.Array;
+
+        die "A numeric scatter plot requires exactly two column names."
+        unless @names.elems == 2;
+
+        $data = $data.kv.map(-> $i, $value {
+            %(@names[0] => $i + 1, @names[1] => $value)
+        }).Array;
+        
     } elsif is-reshapable(Iterable, Positional, $data) || is-reshapable(Iterable, Seq, $data) {
         my $k = $data.head.elems;
-        $column-names = (^$k)».Str;
+        $column-names = (^$k)».Str if $column-names.isa(Whatever);
         $data = $data.map({ $column-names.Array Z=> $_.Array })».Hash.Array;
     }
     my $res = generate-code($data, :$column-names, :$format, |%args);
