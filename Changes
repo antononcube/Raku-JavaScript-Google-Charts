@@ -1,5 +1,8 @@
 Changes of the Raku package "JavaScript::Google::Charts"
 
+0.1.1 2026-10-25
+    - Bug fix of column names argument passing for scatter plots.
+
 0.1.0 2026-10-11
     - Controls and dashboards support.
     - Implemented Calendar Chart.
