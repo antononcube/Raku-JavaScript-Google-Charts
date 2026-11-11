@@ -16,7 +16,7 @@ END
 
 #| Configuration JavaScript code to be executed in %%javascript magic cell in a Jupyter notebook
 sub js-google-charts-config() is export {
-    return JavaScript::Google::CodeSnippets::GetGoogleChartsPackages() ~ "\n" ~ $jsGoogleChartsConfigCode;
+    return JavaScript::Google::Charts::CodeSnippets::GetGoogleChartsPackages() ~ "\n" ~ $jsGoogleChartsConfigCode;
 }
 
 #============================================================
